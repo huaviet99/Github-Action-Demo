@@ -1,9 +1,5 @@
 name: Demo-CI
 
-# Prerequisites for this workflow:
-# - must be a mac
-# - xcodebuild
-
 on:
   pull_request:
     branches: [master]
@@ -19,12 +15,6 @@ jobs:
 
       - name: Build First and run unit test script
         env:
-          scheme: First
+          scheme: GithubActionDemo
         run: |
-          Scripts/github-actions/run_unit_tests.sh $scheme
-
-      - name: Build Second and run unit scripts
-        env:
-          scheme: Second
-        run: |
-          Scripts/github-actions/run_unit_tests.sh $scheme
+          Scripts/github-actions/unit-test-script.sh $scheme

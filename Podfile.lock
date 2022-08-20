@@ -1,0 +1,16 @@
+PODS:
+  - xcbeautify (0.13.0)
+
+DEPENDENCIES:
+  - xcbeautify
+
+SPEC REPOS:
+  trunk:
+    - xcbeautify
+
+SPEC CHECKSUMS:
+  xcbeautify: 663b4c0c6e1ba22b5dfaf9382202473d3bd52046
+
+PODFILE CHECKSUM: 76162df26ae48a1837e5e232abc78ed197d240dd
+
+COCOAPODS: 1.11.2
