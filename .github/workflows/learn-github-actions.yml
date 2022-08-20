@@ -1,0 +1,30 @@
+name: Demo-CI
+
+# Prerequisites for this workflow:
+# - must be a mac
+# - xcodebuild
+
+on:
+  pull_request:
+    branches: [master]
+    types: [ready_for_review, opened, synchronize, reopened]
+
+jobs:
+  my-job:
+    runs-on: macos-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build First and run unit test script
+        env:
+          scheme: First
+        run: |
+          Scripts/github-actions/run_unit_tests.sh $scheme
+
+      - name: Build Second and run unit scripts
+        env:
+          scheme: Second
+        run: |
+          Scripts/github-actions/run_unit_tests.sh $scheme
