@@ -12,7 +12,7 @@
 
 -(int)addition: (int) firstNumber withSecondNumber: (int) secondNumber
 {
-    return firstNumber + secondNumber;
+    return firstNumber + secondNumber + 1;
 }
 
 @end
