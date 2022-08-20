@@ -1,0 +1,51 @@
+name: CD
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy_build_to_firebase:
+    runs-on: macos-latest
+    env:
+      BUILD_NUMBER: null
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Calculate build number
+        env:
+          ORIGINAL_BUILD_NUMBER: 0
+        run: |
+          build_number=${($GITHUB_RUN_NUMBER + $ORIGINAL_BUILD_NUMBER)}
+          echo "BUILD_NUMBER=$build_number" >> $GITHUB_ENV
+          echo "Current build number: $env.BUILD_NUMBER"
+
+      - name: Set build number to deploy build
+        env:
+          plist: GithubActionDemo/Info.plist
+        run: |
+          for PLIST in $plist; do
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ env.BUILD_NUMBER }}" $PLIST
+          done
+
+      - name: Archive and export GithubActionDemo
+        env:
+          scheme: GithubDemoAction
+          archive_path: build/GithubActionDemo.xcarchive
+          export_plist: ExportOptions/AmbiClimateStagingExportOptions.plist
+          export_path: build/GithubActionDemo/
+        run: |
+          Scripts/build_ipa.sh “$scheme” “$archive_path” “$export_path” “$export_plist”
+
+      - name: Upload GithubActionDemo to Firebase
+        env:
+          firebase_token: ${{ secrets.FIREBASE_TOKEN }}
+          app: 1:942193784289:ios:312312312k3lj
+          groups: qa, backend-ai, ios, android, tma
+          ipa_path: build/GithubActionDemo/GithubActionDemo.ipa
+        run: |
+          firebase appdistribution:distribute “$ipa_path” —app —groups “$groups” —token “firebase_token”

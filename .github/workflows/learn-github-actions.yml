@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Build First and run unit test script
+      - name: Build and run unit tests with GithubActionDemo scheme
         env:
           scheme: GithubActionDemo
         run: |

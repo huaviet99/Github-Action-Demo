@@ -12,7 +12,7 @@ destination="platform=$platform,name=$device"
 echo "Current scheme: GithubActionDemo"
 echo "Start building with destination: $destination"
 
-# Build phase
+# Build application
 set -o pipefail && xcodebuild build-for-testing \
     -workspace GithubActionDemo.xcworkspace \
     -scheme "$scheme" \
